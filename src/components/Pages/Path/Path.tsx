@@ -87,7 +87,13 @@ const Paths = () => {
     const files = lines
       .map((line) => line.split(/\t+/)[1])
       .filter((filename) => filename);
+
     setExtractedFileNames(files);
+    
+    // Automatically set the extracted names into the Product Media Viewer area as well
+    if (files.length > 0) {
+      setFileNames(files.join("\n"));
+    }
   };
 
   const addStylesToIframe = () => {
@@ -175,9 +181,12 @@ const Paths = () => {
           Extract
         </Button>
         {extractedFileNames.length > 0 && (
-          <pre className="mt-4 p-4 bg-gray-100 rounded-md">
-            {extractedFileNames.join("\n")}
-          </pre>
+          <TextArea
+            value={extractedFileNames.join("\n")}
+            rows={6}
+            readOnly
+            className="ant-input ant-input-lg css-la24ln mt-4 p-4 bg-gray-100 rounded-md"
+          />
         )}
       </Card>
 
