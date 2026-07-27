@@ -55,7 +55,7 @@ const Paths = () => {
     products[selectedProduct].join("\n")
   );
   const [filePath, setFilePath] = useState(
-    "https://creativeapp.sebpo.net/banner/awcreative/2026/American_Family_Insurance/Hero_wVideo/Evergreen/v1/"
+    "https://creativeapp.sebpo.net/banner/awcreative/2026/golden_isles/q1_2026_tac/hero_wvideo/v1/"
   );
   const [mediaHtml, setMediaHtml] = useState("");
   const [inputText, setInputText] = useState("");
