@@ -10,24 +10,36 @@ const products = {
   Hero: [
     "desktop_bg.jpg",
     "desktop_content.png",
+    "desktop_content.jpg",
     "iPad_bg.jpg",
     "iPad_content.png",
+    "iPad_content.jpg",
     "iPhone_bg.jpg",
     "iPhone_content.png",
+    "iPhone_content.jpg",
     "iPhone_content_320.png",
+    "iPhone_content_320.jpg",
   ],
   Hero_wVideo: [
     "amfam.mp4",
     "amfam.webm",
     "desktop_bg.jpg",
     "desktop_content.png",
+    "desktop_content.jpg",
     "iPad_bg.jpg",
     "iPad_content.png",
+    "iPad_content.jpg",
     "iPhone_bg.jpg",
     "iPhone_content.png",
+    "iPhone_content.jpg",
     "iPhone_content_320.png",
+    "iPhone_content_320.jpg",
   ],
-  Desktop_Hero: ["desktop_bg.jpg", "desktop_content.png"],
+  Desktop_Hero: [
+    "desktop_bg.jpg", 
+    "desktop_content.png",
+    "desktop_content.jpg",
+  ],
 };
 
 const Paths = () => {
