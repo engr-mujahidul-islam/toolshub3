@@ -23,6 +23,8 @@ const products = {
   Hero_wVideo: [
     "amfam.mp4",
     "amfam.webm",
+    "poster.png",
+    "poster.jpg",
     "desktop_bg.jpg",
     "desktop_content.png",
     "desktop_content.jpg",
@@ -39,6 +41,23 @@ const products = {
     "desktop_bg.jpg", 
     "desktop_content.png",
     "desktop_content.jpg",
+  ],
+  Desktop_Takeover: [
+    "amfam.mp4",
+    "amfam.webm",
+    "poster.png",
+    "poster.jpg",
+    "responsive_hero_wGutter_top_content.png",
+    "responsive_hero_wGutter_top_content.jpg",
+    "responsive_hero_wGutter_largeSkin.png",
+    "responsive_hero_wGutter_largeSkin.jpg",
+    "responsive_hero_wGutter_midSkin.png",
+    "responsive_hero_wGutter_midSkin.jpg",  
+    "responsive_hero_wGutter_midSkin.jpg",  
+    "responsive_hero_wGutter_narrowSkin.png",  
+    "responsive_hero_wGutter_narrowSkin.jpg",  
+    "responsive_hero_wGutter_smallSkin.png",  
+    "responsive_hero_wGutter_smallSkin.jpg",  
   ],
 };
 
