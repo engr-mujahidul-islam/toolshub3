@@ -19,13 +19,21 @@ const ImageNames = () => {
 
   const handleProcessImages = () => {
     const finalVersionNo = versionNo ? `_${versionNo}` : "";
-    const finalTicketNo = ticketNo ? `_${ticketNo}` : "";
     const finalGamVersion = gamVersion ? `_v${gamVersion}` : "_v1";
 
+    // Standard suffix: _[versionNo]_[ticketNo]_[gamVersion]
+    const finalTicketNo = ticketNo ? `_${ticketNo}` : "";
     const imgLastName =
       storageType === "SEBPO_Server"
         ? ""
         : `${finalVersionNo}${finalTicketNo}${finalGamVersion}`;
+
+    // App_BGI suffix: adds "_app_bgi" right before the ticket number
+    const bgiTicketNo = ticketNo ? `_app_bgi_${ticketNo}` : "_app_bgi";
+    const bgiImgLastName =
+      storageType === "SEBPO_Server"
+        ? ""
+        : `${finalVersionNo}${bgiTicketNo}${finalGamVersion}`;
 
     const newItems: CopyItem[] = [];
 
@@ -78,6 +86,19 @@ const ImageNames = () => {
             `,
         }
       );
+    } else if (productType === "App_BGI") {
+      newItems.push(
+        {
+          id: "mobile_ad_360",
+          label: "mobile_ad_360",
+          text: `mobile_ad_360${bgiImgLastName}`,
+        },
+        {
+          id: "mobile_ad_430",
+          label: "mobile_ad_430",
+          text: `mobile_ad_430${bgiImgLastName}`,
+        }
+      );
     }
 
     if (featureSelect === "wVideo") {
@@ -112,6 +133,7 @@ const ImageNames = () => {
             <Option value="Mobile_Hero">Mobile Hero</Option>
             <Option value="Desktop_Takeover">Desktop Takeover</Option>
             <Option value="Digital_Billboard">Digital Billboard</Option>
+            <Option value="App_BGI">App BGI</Option>
           </Select>
 
           <Select
@@ -164,7 +186,7 @@ const ImageNames = () => {
           />
           <Input
             placeholder="GAM Version"
-            value={gamVersion}
+            value={gamVersion ? gamVersion : "1"}
             onChange={(e) => setGamVersion(e.target.value)}
             style={{ width: 120 }}
             allowClear
