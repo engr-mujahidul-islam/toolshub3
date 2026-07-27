@@ -32,7 +32,7 @@ const products = {
 
 const Paths = () => {
   const [iframeSrc, setIframeSrc] = useState(
-    "https://creativeapp.sebpo.net/banner/awcreative/2025/"
+    "https://creativeapp.sebpo.net/banner/awcreative/2026/"
   );
   const [iframeInput, setIframeInput] = useState(iframeSrc);
 
@@ -43,7 +43,7 @@ const Paths = () => {
     products[selectedProduct].join("\n")
   );
   const [filePath, setFilePath] = useState(
-    "https://creativeapp.sebpo.net/banner/awcreative/2025/American_Family_Insurance/Hero_wVideo/Evergreen/v1/"
+    "https://creativeapp.sebpo.net/banner/awcreative/2026/American_Family_Insurance/Hero_wVideo/Evergreen/v1/"
   );
   const [mediaHtml, setMediaHtml] = useState("");
   const [inputText, setInputText] = useState("");
