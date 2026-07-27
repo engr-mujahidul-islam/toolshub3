@@ -83,13 +83,52 @@ const Paths = () => {
   const updateIframeSrc = () => setIframeSrc(iframeInput);
 
   const extractFileNames = () => {
+    // 1. Extract Base URL / Path if "Index of" exists in text
+    const indexOfMatch = inputText.match(/Index of\s+(\S+)/i);
+    if (indexOfMatch && indexOfMatch[1]) {
+      let relativePath = indexOfMatch[1];
+      // Ensure leading slash isn't duplicated
+      if (relativePath.startsWith("/")) {
+        relativePath = relativePath.slice(1);
+      }
+      // Ensure trailing slash exists
+      if (!relativePath.endsWith("/")) {
+        relativePath += "/";
+      }
+
+      const generatedUrl = `https://creativeapp.sebpo.net/${relativePath}`;
+      setFilePath(generatedUrl);
+    }
+
+    // 2. Extract Filenames (filtering out metadata lines)
     const lines = inputText.trim().split("\n");
     const files = lines
-      .map((line) => line.split(/\t+/)[1])
-      .filter((filename) => filename);
+      .map((line) => {
+        const parts = line.trim().split(/\t+/);
+        // Take the second tabbed column if available, otherwise take the line itself
+        return parts.length > 1 ? parts[1].trim() : parts[0].trim();
+      })
+      .filter((filename) => {
+        if (!filename) return false;
+        
+        // Exclude directory headers, footers, and non-file entries
+        const lower = filename.toLowerCase();
+        if (
+          lower.startsWith("index of") ||
+          lower.includes("name") ||
+          lower.includes("parent directory") ||
+          lower.includes("apache/") ||
+          lower.includes("last modified") ||
+          lower.includes("description")
+        ) {
+          return false;
+        }
+
+        return true;
+      });
 
     setExtractedFileNames(files);
-    
+
     // Automatically set the extracted names into the Product Media Viewer area as well
     if (files.length > 0) {
       setFileNames(files.join("\n"));
