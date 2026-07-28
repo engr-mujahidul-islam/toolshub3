@@ -53,12 +53,12 @@ const products = {
     "responsive_hero_wGutter_largeSkin.png",
     "responsive_hero_wGutter_largeSkin.jpg",
     "responsive_hero_wGutter_midSkin.png",
-    "responsive_hero_wGutter_midSkin.jpg",  
-    "responsive_hero_wGutter_midSkin.jpg",  
-    "responsive_hero_wGutter_narrowSkin.png",  
-    "responsive_hero_wGutter_narrowSkin.jpg",  
-    "responsive_hero_wGutter_smallSkin.png",  
-    "responsive_hero_wGutter_smallSkin.jpg",  
+    "responsive_hero_wGutter_midSkin.jpg",   
+    "responsive_hero_wGutter_midSkin.jpg",   
+    "responsive_hero_wGutter_narrowSkin.png",   
+    "responsive_hero_wGutter_narrowSkin.jpg",   
+    "responsive_hero_wGutter_smallSkin.png",   
+    "responsive_hero_wGutter_smallSkin.jpg",   
   ],
 };
 
@@ -184,6 +184,27 @@ const Paths = () => {
     setMediaHtml("");
   }, [selectedProduct]);
 
+  // Check whether an asset URL actually exists and returns HTTP 200 OK
+  const checkAssetExists = async (fullUrl: string, isVideo: boolean): Promise<boolean> => {
+    try {
+      const res = await fetch(fullUrl, { method: "HEAD" });
+      if (res.ok) return true;
+    } catch {
+      // Fallback check if HEAD is blocked by CORS
+    }
+
+    if (!isVideo) {
+      return new Promise<boolean>((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = fullUrl;
+      });
+    }
+
+    return false;
+  };
+
   const generateMedia = async () => {
     setLoadingMedia(true);
     setMediaHtml("");
@@ -198,7 +219,25 @@ const Paths = () => {
       return;
     }
 
-    const mediaPromises = fileList.map(async (fileName) => {
+    // Filter out files that return 404 or fail to load
+    const existenceChecks = await Promise.all(
+      fileList.map(async (fileName) => {
+        const fullUrl = filePath + fileName;
+        const isVideo = Boolean(fileName.match(/\.(mp4|webm)$/i));
+        const exists = await checkAssetExists(fullUrl, isVideo);
+        return exists ? fileName : null;
+      })
+    );
+
+    const validFiles = existenceChecks.filter((fileName): fileName is string => fileName !== null);
+
+    if (validFiles.length === 0) {
+      setMediaHtml('<p class="text-gray-500 italic">No existing media found at this path.</p>');
+      setLoadingMedia(false);
+      return;
+    }
+
+    const mediaPromises = validFiles.map(async (fileName) => {
       const fullUrl = filePath + fileName;
       const isPng = fileName.toLowerCase().endsWith(".png");
       const isVideo = fileName.match(/\.(mp4|webm)$/i);
