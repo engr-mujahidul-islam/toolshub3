@@ -138,6 +138,7 @@ const Creatives = () => {
     const date = String(currentDate.getDate()).padStart(2, "0");
     const finalTaskNumber = taskNumber || "";
     const newItems: CopyItem[] = [];
+
     newItems.push({
       id: "converIdFolderParent",
       label: "Parent Folder Name",
@@ -168,54 +169,61 @@ const Creatives = () => {
       label: "Tab Name Revision",
       text: `${month}.${date}.${fullYear}_Revision`,
     });
+
     let baseName = "";
     for (const feature in features)
       if (features[feature as FeatureKeys]) baseName += `_${feature}`;
+
     const inputArray = inputVersion
       .split(",")
       .map((item) => item.trim())
       .filter((item) => item !== "");
 
-    const generateUnits = (type: string, suffixes: string[] = [""]) => {
-      let text = "";
+    const generateUnitsArray = (type: string, suffixes: string[] = [""]) => {
+      const list: string[] = [];
       suffixes.forEach((suffix) => {
         for (const size in sizes) {
-          if (sizes[size as SizeKeys])
-            text += `${processedConverseID}_${type}_${size}${suffix}<br/>`;
+          if (sizes[size as SizeKeys]) {
+            list.push(`${processedConverseID}_${type}_${size}${suffix}`);
+          }
         }
       });
-      return text;
+      return list;
     };
 
     if (productTypes.Hero) {
       const heroUnits = inputArray.length
-        ? inputArray
-            .map(
-              (v) =>
-                `${processedConverseID}_Hero${baseName}_Desktop_${v}<br/>${processedConverseID}_Hero${baseName}_Mobile_Web_${v}`
-            )
-            .join("<br/>")
-        : `${processedConverseID}_Hero${baseName}_Desktop<br/>${processedConverseID}_Hero${baseName}_Mobile_Web`;
+        ? inputArray.flatMap((v) => [
+            `${processedConverseID}_Hero${baseName}_Desktop_${v}`,
+            `${processedConverseID}_Hero${baseName}_Mobile_Web_${v}`,
+          ])
+        : [
+            `${processedConverseID}_Hero${baseName}_Desktop`,
+            `${processedConverseID}_Hero${baseName}_Mobile_Web`,
+          ];
+
       newItems.push({
         id: "converIdHeroDesktop",
         label: "Hero",
-        text: <div dangerouslySetInnerHTML={{ __html: heroUnits }} />,
+        text: heroUnits.join("\n"),
       });
     }
 
     if (productTypes.BothHero) {
       const bothHeroUnits = inputArray.length
-        ? inputArray
-            .map(
-              (v) =>
-                `${processedConverseID}_Desktop_Hero${baseName}_${v}<br/>${processedConverseID}_Mobile_Hero${baseName}_${v}`
-            )
-            .join("<br/>")
-        : `${processedConverseID}_Desktop_Hero${baseName}<br/>${processedConverseID}_Mobile_Hero${baseName}`;
+        ? inputArray.flatMap((v) => [
+            `${processedConverseID}_Desktop_Hero${baseName}_${v}`,
+            `${processedConverseID}_Mobile_Hero${baseName}_${v}`,
+          ])
+        : [
+            `${processedConverseID}_Desktop_Hero${baseName}`,
+            `${processedConverseID}_Mobile_Hero${baseName}`,
+          ];
+
       newItems.push({
         id: "converIdBothHero",
         label: "Both Hero",
-        text: <div dangerouslySetInnerHTML={{ __html: bothHeroUnits }} />,
+        text: bothHeroUnits.join("\n"),
       });
     }
 
@@ -224,23 +232,23 @@ const Creatives = () => {
         .split(",")
         .map((t) => t.trim())
         .filter((t) => t !== "");
+
       const standardUnits = inputArray.length
-        ? inputArray
-            .map((v) =>
-              generateUnits(
-                `Standard`,
-                typesArray.map((t) => `_${t}_${v}`)
-              )
+        ? inputArray.flatMap((v) =>
+            generateUnitsArray(
+              `Standard`,
+              typesArray.map((t) => `_${t}_${v}`)
             )
-            .join("<br/>")
-        : generateUnits(
+          )
+        : generateUnitsArray(
             "Standard",
             typesArray.length ? typesArray.map((t) => `_${t}`) : ["_Static"]
           );
+
       newItems.push({
         id: "converIdStandard",
         label: "Standard",
-        text: <div dangerouslySetInnerHTML={{ __html: standardUnits }} />,
+        text: standardUnits.join("\n"),
       });
     }
 

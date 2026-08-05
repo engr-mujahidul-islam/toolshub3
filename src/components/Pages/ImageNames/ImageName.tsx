@@ -18,7 +18,12 @@ const ImageNames = () => {
   const [generatedItems, setGeneratedItems] = useState<CopyItem[]>([]);
 
   const handleProcessImages = () => {
-    const finalVersionNo = versionNo ? `_${versionNo}` : "";
+    // Sanitize versionNo: trim spaces and replace internal spaces/whitespace with underscores
+    const sanitizedVersionNo = versionNo
+      ? versionNo.trim().replace(/\s+/g, "_")
+      : "";
+
+    const finalVersionNo = sanitizedVersionNo ? `_${sanitizedVersionNo}` : "";
     const finalGamVersion = gamVersion ? `_v${gamVersion}` : "_v1";
 
     // Standard suffix: _[versionNo]_[ticketNo]_[gamVersion]
@@ -74,16 +79,7 @@ const ImageNames = () => {
           id: "HeroManualLoader",
           label: "Hero Manual Loader",
           type: "code",
-          text: `
-              manualAssetsLoader:[ <br />
-              '%%FILE:desktop_bg%%', <br />
-              '%%FILE:desktop_content%%', <br />
-              '%%FILE:iPad_bg%%', <br />
-              '%%FILE:iPad_content%%', <br />
-              '%%FILE:iPhone_bg%%', <br />
-              '%%FILE:iPhone_content%%', <br />
-              '%%FILE:iPhone_content_320%%', <br />]
-            `,
+          text: `manualAssetsLoader:[\n  '%%FILE:desktop_bg%%',\n  '%%FILE:desktop_content%%',\n  '%%FILE:iPad_bg%%',\n  '%%FILE:iPad_content%%',\n  '%%FILE:iPhone_bg%%',\n  '%%FILE:iPhone_content%%',\n  '%%FILE:iPhone_content_320%%'\n]`,
         }
       );
     } else if (productType === "App_BGI") {
@@ -97,6 +93,40 @@ const ImageNames = () => {
           id: "mobile_ad_430",
           label: "mobile_ad_430",
           text: `mobile_ad_430${bgiImgLastName}`,
+        }
+      );
+    } else if (productType === "Desktop_Takeover") {
+      newItems.push(
+        {
+          id: "responsive_hero_wGutter_top_content",
+          label: "responsive_hero_wGutter_top_content",
+          text: `responsive_hero_wGutter_top_content${imgLastName}`,
+        },
+        {
+          id: "responsive_hero_wGutter_largeSkin",
+          label: "responsive_hero_wGutter_largeSkin",
+          text: `responsive_hero_wGutter_largeSkin${imgLastName}`,
+        },
+        {
+          id: "responsive_hero_wGutter_midSkin",
+          label: "responsive_hero_wGutter_midSkin",
+          text: `responsive_hero_wGutter_midSkin${imgLastName}`,
+        },
+        {
+          id: "responsive_hero_wGutter_smallSkin",
+          label: "responsive_hero_wGutter_smallSkin",
+          text: `responsive_hero_wGutter_smallSkin${imgLastName}`,
+        },
+        {
+          id: "responsive_hero_wGutter_narrowSkin",
+          label: "responsive_hero_wGutter_narrowSkin",
+          text: `responsive_hero_wGutter_narrowSkin${imgLastName}`,
+        },
+        {
+          id: "DesktopTakeoverManualLoader",
+          label: "Desktop Takeover Manual Loader",
+          type: "code",
+          text: `manualAssetsLoader:[\n  '%%FILE:responsive_hero_wGutter_top_content%%',\n  '%%FILE:responsive_hero_wGutter_largeSkin%%',\n  '%%FILE:responsive_hero_wGutter_midSkin%%',\n  '%%FILE:responsive_hero_wGutter_smallSkin%%',\n  '%%FILE:responsive_hero_wGutter_narrowSkin%%'\n]`,
         }
       );
     }
