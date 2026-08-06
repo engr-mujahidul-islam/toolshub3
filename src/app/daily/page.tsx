@@ -2,7 +2,7 @@ import CopyList, { CopyItem } from "@/components/Reusable/CopyList";
 import React from "react";
 
 const dailyItems: CopyItem[] = [
-  { id: "salam", label: "Salam", text: "As-Salamu Alaikum." },
+  { id: "salam", label: "Salam", text: "As-salāmu ʿalaykum" },
   {
     id: "lunchPrayerBreak",
     label: "Lunch & Prayer Break",
