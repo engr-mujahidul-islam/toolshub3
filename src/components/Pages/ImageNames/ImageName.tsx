@@ -26,19 +26,26 @@ const ImageNames = () => {
     const finalVersionNo = sanitizedVersionNo ? `_${sanitizedVersionNo}` : "";
     const finalGamVersion = gamVersion ? `_v${gamVersion}` : "_v1";
 
-    // Standard suffix: _[versionNo]_[ticketNo]_[gamVersion]
-    const finalTicketNo = ticketNo ? `_${ticketNo}` : "";
+    // Map each product type to its lowercase filename identifier tag
+    const productTagMap: Record<string, string> = {
+      Hero: "_hero",
+      Desktop_Hero: "_Desktop_Hero",
+      Mobile_Hero: "_Mobile_Hero",
+      Mobile_Takeover: "_Mobile_Takeover",
+      Desktop_Takeover: "_Desktop_Takeover",
+      App_BGI: "_App_BGI",
+    };
+
+    const productTag = productTagMap[productType] || "";
+
+    const finalTicketNo = ticketNo
+      ? `${productTag}_${ticketNo}`
+      : `${productTag}`;
+
     const imgLastName =
       storageType === "SEBPO_Server"
         ? ""
         : `${finalVersionNo}${finalTicketNo}${finalGamVersion}`;
-
-    // App_BGI suffix: adds "_app_bgi" right before the ticket number
-    const bgiTicketNo = ticketNo ? `_app_bgi_${ticketNo}` : "_app_bgi";
-    const bgiImgLastName =
-      storageType === "SEBPO_Server"
-        ? ""
-        : `${finalVersionNo}${bgiTicketNo}${finalGamVersion}`;
 
     const newItems: CopyItem[] = [];
 
@@ -82,17 +89,43 @@ const ImageNames = () => {
           text: `manualAssetsLoader:[\n  '%%FILE:desktop_bg%%',\n  '%%FILE:desktop_content%%',\n  '%%FILE:iPad_bg%%',\n  '%%FILE:iPad_content%%',\n  '%%FILE:iPhone_bg%%',\n  '%%FILE:iPhone_content%%',\n  '%%FILE:iPhone_content_320%%'\n]`,
         }
       );
+    } else if (productType === "Desktop_Hero") {
+      newItems.push(
+        {
+          id: "desktop_bg",
+          label: "desktop_bg",
+          text: `desktop_bg${imgLastName}`,
+        },
+        {
+          id: "desktop_content",
+          label: "desktop_content",
+          text: `desktop_content${imgLastName}`,
+        }
+      );
+    } else if (productType === "Mobile_Hero" || productType === "Mobile_Takeover") {
+      newItems.push(
+        {
+          id: "iPhone_content",
+          label: "iPhone_content",
+          text: `iPhone_content${imgLastName}`,
+        },
+        {
+          id: "iPhone_content_320",
+          label: "iPhone_content_320",
+          text: `iPhone_content_320${imgLastName}`,
+        }
+      );
     } else if (productType === "App_BGI") {
       newItems.push(
         {
           id: "mobile_ad_360",
           label: "mobile_ad_360",
-          text: `mobile_ad_360${bgiImgLastName}`,
+          text: `mobile_ad_360${imgLastName}`,
         },
         {
           id: "mobile_ad_430",
           label: "mobile_ad_430",
-          text: `mobile_ad_430${bgiImgLastName}`,
+          text: `mobile_ad_430${imgLastName}`,
         }
       );
     } else if (productType === "Desktop_Takeover") {
@@ -161,6 +194,7 @@ const ImageNames = () => {
             <Option value="Hero">Hero</Option>
             <Option value="Desktop_Hero">Desktop Hero</Option>
             <Option value="Mobile_Hero">Mobile Hero</Option>
+            <Option value="Mobile_Takeover">Mobile Takeover</Option>
             <Option value="Desktop_Takeover">Desktop Takeover</Option>
             <Option value="Digital_Billboard">Digital Billboard</Option>
             <Option value="App_BGI">App BGI</Option>
